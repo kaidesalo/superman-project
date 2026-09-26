@@ -19,7 +19,7 @@ function Teacher() {
             <Button
               color="light"
               className="justify-content-end"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/Login")}
             >
               Logout
             </Button>

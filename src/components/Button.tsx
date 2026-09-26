@@ -3,6 +3,7 @@ interface Props {
   color?: 'primary' | 'secondary' | 'danger' | 'success' | 'dark' | 'light';
   onClick: () => void;
   className?: string;
+  type?: string;
 }
 
 const Button = ({ children, onClick, color='dark'}: Props) => {
