@@ -1,0 +1,54 @@
+import React, { useState, useEffect } from 'react'; 
+import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
+import InstructorAddCourse from "../components/InstructorAddCourse";
+
+function InstructorAddCoursePage() {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <nav className="navbar bg-secondary border-bottom border-body">
+        <div className="container-fluid">
+          <div className="d-flex justify-content-start">
+            <span className="badge text-bg-dark text-capitalize navbar-text fs-1">
+              Hello, [
+              <span className="fst-italic fw-lighter">teacher placeholder</span>
+              ]
+            </span>
+          </div>
+          <div className="d-flex justify-content-end">
+            <Button
+              color="dark"
+              className="justify-content-end"
+              onClick={() => navigate("/Login")}
+            >
+              Logout
+            </Button>
+          </div>
+        </div>
+      </nav>
+
+      <main className="container-flex">
+        <div className="d-grid gap-2 p-4" >
+
+          
+          <Button className="" onClick={() => navigate("/InstructorSchedulePage")}>
+            Courses
+          </Button>
+
+          <Button className="" onClick={() => navigate("/InstructorAddCoursePage")}>
+            Create Course
+          </Button>
+
+          <Button className="" onClick={() => console.log("See Students")}>See Students</Button>
+
+          <InstructorAddCourse />
+
+        </div>
+      </main>
+    </>
+  );
+}
+
+export default InstructorAddCoursePage;

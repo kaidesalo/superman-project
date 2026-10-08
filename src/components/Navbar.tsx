@@ -2,6 +2,10 @@ import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "../Pages/Login";
 import Student from "../Pages/Student";
 import Teacher from "../Pages/Teacher";
+import InstructorSchedulePage from "../Pages/InstructorSchedulePage";
+import InstructorAddCoursePage from "../Pages/InstructorAddCoursePage";
+import StudentAddCoursePage from "../Pages/StudentAddCoursePage";
+import InstructorEditCoursePage from "../Pages/InstructorEditCoursePage";
 import Button from "../components/Button";
 
 const Navbar = () => {
@@ -76,7 +80,14 @@ const Navbar = () => {
       <Routes>
         <Route path="/Login" element={<Login />} />
         <Route path="/" element={<Teacher />} />
+      
+        <Route path="/InstructorSchedulePage" element={<InstructorSchedulePage />} />
+        <Route path="/InstructorAddCoursePage" element={<InstructorAddCoursePage />} />
+        <Route path="/InstructorEditCoursePage/:id" element={<InstructorEditCoursePage />} />
+
         <Route path="/Student" element={<Student />} />
+        <Route path="/StudentAddCoursePage" element={<StudentAddCoursePage />} />
+
       </Routes>
     </Router>
   )

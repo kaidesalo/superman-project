@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import StudentSchedule from "../components/StudentSchedule";
 
-
 function Student() {
   const navigate = useNavigate();
 
@@ -36,10 +35,10 @@ function Student() {
       <main className="container-flex">
         <div className="d-grid gap-2 p-4" >
           {/* 2. Change state to true on click */}
-          <button onClick={() => setIsLoaded(true)}>
+          <Button onClick={() => setIsLoaded(true)}>
             My Schedule
-          </button>
-          <Button onClick={() => console.log("Add Class")}>Add Class</Button>
+          </Button>
+          <Button onClick={() => navigate("/StudentAddCoursePage")}>Add Class</Button>
 
           {/* 3. Conditionally render the component using the && operator */}
           {isLoaded && <StudentSchedule />}

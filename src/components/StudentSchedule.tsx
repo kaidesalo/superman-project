@@ -1,33 +1,27 @@
 import { useState, useEffect } from 'react';
 
 export default function StudentSchedule() {
-  const [courses, setCourses] = useState(null);
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 2. Fetch the data when the component mounts
+  // get courses when my schedule button is clicked
+  // from google search, which modifications
   useEffect(() => {
-    const fetchSchedule = async () => {
-      try {
-        const response = await fetch('https://sdev-module5-tutorial.onrender.com/api/studentCourses');
-        const result = await response.json();
-        console.log(result);
-        setCourses(result); // Update state with the fetched array
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
+    fetch('https://sdev-module5-tutorial.onrender.com/api/studentCourses')
+      .then((response) => response.json())
+      .then((data) => {
+        setCourses(data); // Save the array to state
         setLoading(false);
-      }
-    };
-
-    fetchSchedule();
-  }, []); // Empty dependency array means this runs once on mount
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
 
   if (loading) return <p>Loading schedule...</p>;
 
-  // 3. Iterate over the data using .map() inside JSX
+  // loop over the data using map
   return (
     <div>
-      <h2>My Schecule</h2>
+      <h2>My Schedule</h2>
       <ul>
         {courses.map((course) => (
           <li key={course._id}>

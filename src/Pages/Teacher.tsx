@@ -1,5 +1,8 @@
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+import InstructorSchedulePage from "../Pages/InstructorSchedulePage";
+import InstructorAddCoursePage from "../Pages/InstructorAddCoursePage";
 
 function Teacher() {
   const navigate = useNavigate();
@@ -29,8 +32,17 @@ function Teacher() {
 
       <main className="container-flex">
         <div className="d-grid gap-2 p-4" >
-          <Button className=""  onClick={() => console.log("Create Course")}>Create Course</Button>
-          <Button onClick={() => console.log("See Students")}>See Students</Button>
+
+          <Button className="" onClick={() => navigate("/InstructorSchedulePage")}>
+            Courses
+          </Button>
+
+          <Button className="" onClick={() => navigate("InstructorAddCoursePage")}>
+            Create Course
+          </Button>
+          
+          <Button className="" onClick={() => console.log("See Students")}>See Students</Button>
+
         </div>
       </main>
     </>
