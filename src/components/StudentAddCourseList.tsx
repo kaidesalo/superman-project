@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
+
+// @ts-ignore
 import { Link } from "react-router-dom";
+
 import Button from "../components/Button";
 
 export default function StudentAddCourseList() {
@@ -21,7 +24,7 @@ export default function StudentAddCourseList() {
   // from google search results
   // delete item from list and api on button click
   // can this be moved to a new component??
-  const handleAdd = async (id) => {
+  const handleAdd = async (id: string) => {
     
     // confirm delete
     const confirmDelete = window.confirm("Are you sure you want to delete this course? " + id);
@@ -31,8 +34,9 @@ export default function StudentAddCourseList() {
       // Send the DELETE request to your API endpoint
       const response = await fetch('https://sdev-module5-tutorial.onrender.com/api/courses/' + id, {
         method: 'DELETE',
-        'Content-Type': 'application/json'
-        // Add Authorization tokens here if required
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
       if (response.ok) {
@@ -58,9 +62,9 @@ export default function StudentAddCourseList() {
           {courses.map((course) => (
             <li key={course._id}>
               {course.name} - {course._id} - 
-              <Button onClick={() => handleAdd(course._id)} style={{ marginLeft: '10px', color: 'red' }}>
+              <button onClick={() => handleAdd(course._id)} style={{ marginLeft: '10px', color: 'red' }}>
                 Add
-              </Button>
+              </button>
             </li>
           ))}
       </ul>

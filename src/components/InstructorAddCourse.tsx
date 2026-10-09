@@ -1,5 +1,7 @@
 // @ts-ignore
 import React, { useState } from 'react';
+
+// @ts-ignore
 import Button from "../components/Button";
 
 export default function InstructorAddCourse() {

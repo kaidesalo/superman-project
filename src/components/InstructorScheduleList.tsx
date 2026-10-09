@@ -21,7 +21,7 @@ export default function InstructorScheduleList() {
   // from google search results
   // delete item from list and api on button click
   // can this be moved to a new component??
-  const handleDelete = async (id: any) => {
+  const handleDelete = async (id: string) => {
     
     // confirm delete
     const confirmDelete = window.confirm("Are you sure you want to delete this course? " + id);
@@ -60,9 +60,9 @@ export default function InstructorScheduleList() {
             <li key={course._id}>
               {course.name} - {course._id} - 
               <Link to={`/InstructorEditCoursePage/${course._id}`}>Edit</Link> 
-              <Button onClick={() => handleDelete(course._id)} style={{ marginLeft: '10px', color: 'red' }}>
-              Delete
-            </Button>
+              <button onClick={() => handleDelete(course._id)} style={{ marginLeft: '10px', color: 'red' }}>
+                Delete
+              </button>
             </li>
           ))}
       </ul>
