@@ -18,15 +18,10 @@ export default function InstructorScheduleList() {
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
-  // click on edit
-  const handleEditClick = () => {
-      navigate(`/edit/${item.id}`); 
-  };
-
   // from google search results
   // delete item from list and api on button click
   // can this be moved to a new component??
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: any) => {
     
     // confirm delete
     const confirmDelete = window.confirm("Are you sure you want to delete this course? " + id);
@@ -36,8 +31,9 @@ export default function InstructorScheduleList() {
       // Send the DELETE request to your API endpoint
       const response = await fetch('https://sdev-module5-tutorial.onrender.com/api/courses/' + id, {
         method: 'DELETE',
-        'Content-Type': 'application/json'
-        // Add Authorization tokens here if required
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
       if (response.ok) {

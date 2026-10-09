@@ -114,9 +114,9 @@ export default function InstructorEditCourse() {
           <input type="text" id="name" name="name" required defaultValue={courseName} />
         </div>
 
-        <Button className="" onClick={handleSubmit} disabled={loading}>
+        <button className="" onClick={handleSubmit} disabled={loading}>
           {loading ? 'Updating Course...' : 'Update Course'}
-        </Button>
+        </button>
       </form>
 
       {message && <p className="status-message">{message}</p>}
