@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 interface CourseType {
   _id: string;
   name: string;
+  studentId: string;
+  courseId: string;
 }
 
 export default function StudentSchedule() {
