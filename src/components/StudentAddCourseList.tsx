@@ -3,10 +3,16 @@ import { useState, useEffect } from 'react';
 // @ts-ignore
 import { Link } from "react-router-dom";
 
+// @ts-ignore
 import Button from "../components/Button";
 
+interface CourseType {
+  _id: string;
+  name: string;
+}
+
 export default function StudentAddCourseList() {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState<CourseType[]>([]);
   const [loading, setLoading] = useState(false);
 
   // get list of courses

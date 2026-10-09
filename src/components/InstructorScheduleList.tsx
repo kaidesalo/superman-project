@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+
+// @ts-ignore
 import Button from "../components/Button";
 
 export default function InstructorScheduleList() {
