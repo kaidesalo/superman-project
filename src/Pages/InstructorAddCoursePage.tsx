@@ -1,6 +1,13 @@
+// @ts-ignore
 import React, { useState, useEffect } from 'react'; 
+
+// @ts-ignore
 import { useNavigate } from "react-router-dom";
+
+// @ts-ignore
 import Button from "../components/Button";
+
+// @ts-ignore
 import InstructorAddCourse from "../components/InstructorAddCourse";
 
 function InstructorAddCoursePage() {
