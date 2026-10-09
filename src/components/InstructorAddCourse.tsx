@@ -11,7 +11,7 @@ export default function InstructorAddCourse() {
   const [message, setMessage] = useState('');
 
   // handle form submit
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event?: any) => {
     // prevent browser from submitting form
     event.preventDefault(); 
     setLoading(true);
@@ -53,7 +53,16 @@ export default function InstructorAddCourse() {
       }
 
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
+        
+      if (error instanceof Error) {
+        // TypeScript now knows 'error' is an Error object
+        // console.error(error.message);
+        setMessage(`Error: ${error.message}`);
+      } else {
+        // Handle the case where something else was thrown (e.g., a string or null)
+        console.error("An unexpected error occurred", error);
+      }
+
     } finally {
       setLoading(false);
     }

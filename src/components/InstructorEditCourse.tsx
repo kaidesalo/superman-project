@@ -46,7 +46,7 @@ export default function InstructorEditCourse() {
   }, [id]);
 
   // handle form submit
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event?: any) => {
     // prevent browser from submitting form
     event.preventDefault(); 
     setLoading(true);
@@ -55,7 +55,7 @@ export default function InstructorEditCourse() {
     //alert('clicked...' + event.currentTarget);
 
     // identify the form
-    const form = document.getElementById('editCourseForm');
+    const form = document.getElementById('editCourseForm') as HTMLFormElement;
 
     // use formData to serialize and capture all form data
     const formData = new FormData(form);
@@ -77,22 +77,29 @@ export default function InstructorEditCourse() {
         throw new Error('Network response was not ok');
       }
 
+      // @ts-ignore
       const result = await response.json();
+
       setMessage('Course Updated!');
-      form.reset(); // Clear the form fields
+      
+      // safely reset the form
+      if (form !== null) {
+        // TypeScript knows 'form' is safe here
+        form.reset(); 
+      }
+
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
+       if (error instanceof Error) {
+        // TypeScript now knows 'error' is an Error object
+        // console.error(error.message);
+        setMessage(`Error: ${error.message}`);
+      } else {
+        // Handle the case where something else was thrown (e.g., a string or null)
+        console.error("An unexpected error occurred", error);
+      }
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCourseName((prev) => ({
-      ...prev,
-      [name]: value
-    }));
   };
 
   return (
