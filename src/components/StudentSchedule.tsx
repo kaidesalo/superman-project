@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 
+interface CourseType {
+  _id: string;
+  name: string;
+}
+
 export default function StudentSchedule() {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState<CourseType[]>([]);
   const [loading, setLoading] = useState(false);
 
   // get courses when my schedule button is clicked
