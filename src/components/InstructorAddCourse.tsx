@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { useState } from 'react';
 import Button from "../components/Button";
 
@@ -10,7 +11,7 @@ export default function InstructorAddCourse() {
   const [message, setMessage] = useState('');
 
   // handle form submit
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     // prevent browser from submitting form
     event.preventDefault(); 
     setLoading(true);

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+
+// @ts-ignore
 import InstructorSchedulePage from "../Pages/InstructorSchedulePage";
+
+// @ts-ignore
 import InstructorAddCoursePage from "../Pages/InstructorAddCoursePage";
 
 function Teacher() {

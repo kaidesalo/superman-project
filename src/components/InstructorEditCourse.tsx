@@ -1,5 +1,9 @@
+// @ts-ignore
 import React, { useState, useEffect } from 'react'; 
+
+// @ts-ignore
 import { Link, useParams, useNavigate } from "react-router-dom";
+
 import Button from "../components/Button";
 
 export default function InstructorEditCourse() {
