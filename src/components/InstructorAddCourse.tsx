@@ -19,7 +19,7 @@ export default function InstructorAddCourse() {
     //alert('clicked...' + event.currentTarget);
 
     // identify the form
-    const form = document.getElementById('addCourseForm');
+    const form = document.getElementById('addCourseForm') as HTMLFormElement;
 
     // use formData to serialize and capture all form data
     const formData = new FormData(form);
@@ -41,9 +41,16 @@ export default function InstructorAddCourse() {
         throw new Error('Network response was not ok');
       }
 
+      // @ts-ignore
       const result = await response.json();
       setMessage('Course Added!');
-      form.reset(); // Clear the form fields
+
+      // safely reset the form
+      if (form !== null) {
+        // TypeScript knows 'form' is safe here
+        form.reset(); 
+      }
+
     } catch (error) {
       setMessage(`Error: ${error.message}`);
     } finally {
