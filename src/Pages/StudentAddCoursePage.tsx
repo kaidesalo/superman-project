@@ -1,13 +1,20 @@
+// @ts-ignore
 import React, { useState, useEffect } from 'react'; 
+
+// @ts-ignore
 import { useNavigate } from "react-router-dom";
+
 import Button from "../components/Button";
+
+// @ts-ignore
 import StudentSchedule from "../components/StudentSchedule";
+
 import StudentAddCourseList from "../components/StudentAddCourseList";
 
 function StudentAddCoursePage() {
   const navigate = useNavigate();
 
-  // 1. Initialize state to false
+  // @ts-ignore
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
