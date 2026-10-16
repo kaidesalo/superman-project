@@ -2,7 +2,7 @@
 
 A MERN-stack MVP where **teachers manage courses** and **students build schedules**.
 
-> Status: **Milestone 1, Phase 3** — Course model and REST API complete. React pages, auth, and scheduling are coming in later phases.
+> Status: **Milestone 1, Phase 6** — Course CRUD UI plus user accounts (register / sign in / sign out) with JWT in an HTTP-only cookie. Teacher-only course access and ownership come in Phase 7.
 
 ## Technology Stack
 
@@ -62,6 +62,8 @@ cd course-scheduler
 cd server
 npm install
 cp .env.example .env      # then edit values
+# set JWT_SECRET to a random 32+ character string, e.g.:
+# node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 npm run dev               # http://localhost:5000
 ```
 
@@ -82,7 +84,7 @@ npm run dev               # http://localhost:5173
 |----------|---------|---------|
 | `PORT` | `5000` | API port |
 | `MONGODB_URI` | `mongodb://127.0.0.1:27017/course-scheduler` | MongoDB connection string |
-| `JWT_SECRET` | long random string | Signs auth tokens (used from Phase 6) |
+| `JWT_SECRET` | random string, 32+ characters | Signs auth tokens. The server won't start with a missing, short, or example value |
 | `CLIENT_URL` | `http://localhost:5173` | Allowed CORS origin |
 | `NODE_ENV` | `development` | `development` or `production` |
 
@@ -112,6 +114,13 @@ Never commit `.env` files — they are in `.gitignore`.
 | POST | `/api/courses` | Create a course |
 | PUT | `/api/courses/:id` | Update a course (send only the fields to change) |
 | DELETE | `/api/courses/:id` | Delete a course |
+
+| POST | `/api/auth/register` | Create an account (`name`, `email`, `password` ≥ 8 chars, `role`: `teacher` or `student`) and sign in |
+| POST | `/api/auth/login` | Sign in with `email` + `password` (401 `Invalid email or password` on failure) |
+| POST | `/api/auth/logout` | Clear the auth cookie |
+| GET | `/api/auth/me` | Current user, or 401 if not signed in |
+
+Auth uses a JWT stored in an HTTP-only `token` cookie (7 days; `SameSite=Lax` in development, `SameSite=None; Secure` when `NODE_ENV=production`). The token is never sent in a response body or stored in `localStorage`. Passwords are hashed with bcrypt and never returned by the API. The server refuses to start if `JWT_SECRET` is missing, shorter than 32 characters, or still the `.env.example` placeholder.
 
 > Course routes are not protected yet — teacher-only access and ownership checks arrive in Phase 7.
 
