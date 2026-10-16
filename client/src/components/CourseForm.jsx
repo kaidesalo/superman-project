@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { inputClass } from '../utils/inputClass.js'
 
 const SUBJECT_SUGGESTIONS = ['Computer Science', 'Mathematics', 'English', 'Biology', 'Chemistry', 'History']
 
@@ -21,11 +22,6 @@ const validate = (values) => {
   else if (Number(values.credits) <= 0) errors.credits = 'Credits must be greater than zero'
   return errors
 }
-
-const inputClass = (hasError) =>
-  `mt-1 block w-full rounded-lg border px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-    hasError ? 'border-red-400' : 'border-slate-300'
-  }`
 
 function Field({ id, label, error, children }) {
   return (
