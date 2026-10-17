@@ -38,7 +38,11 @@ function Navbar() {
               Add Course
             </NavLink>
           )}
-          {/* Students get "My Schedule" here in Milestone 2 */}
+          {user?.role === 'student' && (
+            <NavLink to="/schedule" className={linkClass}>
+              My Schedule
+            </NavLink>
+          )}
 
           {!loading && (
             <div className="ml-auto flex items-center gap-4">
