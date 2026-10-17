@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { createCourse, getCourse, updateCourse } from '../services/courseService.js'
 import CourseForm from '../components/CourseForm.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
+import useAuth from '../hooks/useAuth.js'
+import { canManageCourse } from '../utils/canManageCourse.js'
 
 // Handles both /courses/new and /courses/:id/edit
 function CourseFormPage() {
   const { id } = useParams()
   const isEdit = Boolean(id)
   const navigate = useNavigate()
+  const location = useLocation()
+  const { user, loading: authLoading } = useAuth()
 
   const [course, setCourse] = useState(null)
   const [loading, setLoading] = useState(isEdit)
@@ -41,6 +45,25 @@ function CourseFormPage() {
       setServerErrors(err.errors || {})
       setSubmitting(false)
     }
+  }
+
+  if (authLoading) return <LoadingSpinner label="Checking your account..." />
+  if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />
+
+  // The server rejects these requests too; this just explains why instead of showing a form that can't be saved.
+  let accessError = ''
+  if (user.role !== 'teacher') accessError = 'Only teachers can create or edit courses.'
+  else if (isEdit && course && !canManageCourse(user, course)) accessError = 'You can only edit courses you created.'
+
+  if (accessError) {
+    return (
+      <div className="mx-auto max-w-2xl space-y-4 px-4 py-8 sm:px-6">
+        <ErrorMessage message={accessError} />
+        <Link to={isEdit ? `/courses/${id}` : '/courses'} className="text-sm font-medium text-blue-600 hover:underline">
+          &larr; Back
+        </Link>
+      </div>
+    )
   }
 
   return (
