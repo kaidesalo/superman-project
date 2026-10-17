@@ -33,10 +33,12 @@ const courseSchema = new mongoose.Schema(
         message: 'Credits must be greater than zero',
       },
     },
-    // Set by the server from the logged-in teacher (added in Phase 7)
+    // The teacher who created the course. Always set by the server from the
+    // signed-in user, never from the request body.
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      required: [true, 'Course owner is required'],
     },
   },
   { timestamps: true }

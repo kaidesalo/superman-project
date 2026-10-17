@@ -3,9 +3,12 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import courseRoutes from './routes/courseRoutes.js';
+import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import errorHandler from './middleware/errorHandler.js';
 
 const app = express();
@@ -28,6 +31,19 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/enrollments', enrollmentRoutes);
+
+// In production the API also serves the built React app, so the site and API share
+// one address and the login cookie is a normal first-party cookie in every browser.
+if (process.env.NODE_ENV === 'production') {
+  const clientDist = path.join(path.dirname(fileURLToPath(import.meta.url)), '../client/dist');
+  app.use(express.static(clientDist));
+  // Any other page (e.g. /courses/123) gets index.html and React Router shows the right page
+  app.use((req, res, next) => {
+    if (req.method !== 'GET' || req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+}
 
 // Unknown API routes
 app.use((req, res) => {

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth.js'
 import AuthCard from '../components/AuthCard.jsx'
 import { inputClass } from '../utils/inputClass.js'
@@ -8,12 +8,15 @@ import ErrorMessage from '../components/ErrorMessage.jsx'
 function LoginPage() {
   const { user, loading, login } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  // Return to the page that sent the user here (e.g. Add Course), otherwise the catalog
+  const from = location.state?.from || '/courses'
   const [values, setValues] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
   if (loading) return null
-  if (user) return <Navigate to="/courses" replace />
+  if (user) return <Navigate to={from} replace />
 
   const handleChange = (event) => setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }))
 
@@ -27,7 +30,7 @@ function LoginPage() {
     setError('')
     try {
       await login(values)
-      navigate('/courses')
+      navigate(from, { replace: true })
     } catch (err) {
       setError(err.message)
       setSubmitting(false)

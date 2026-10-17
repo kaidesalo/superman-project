@@ -1,0 +1,19 @@
+# Render Blueprint: one web service that runs the Express API and also serves the
+# built React app, so the site and API share one address (and one login cookie).
+# Render → New → Blueprint → pick this repo. See "Deployment" in README.md.
+services:
+  - type: web
+    name: vulpicourse-api
+    runtime: node
+    plan: free
+    # --include=dev: Vite is a dev dependency, and NODE_ENV=production would skip it
+    buildCommand: cd client && npm install --include=dev && npm run build && cd ../server && npm install
+    startCommand: cd server && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
