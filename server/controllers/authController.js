@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { csrfTokenFor } from '../utils/csrf.js';
 
 const TOKEN_DAYS = 7;
 
@@ -10,7 +11,7 @@ const cookieOptions = () => {
   return {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: 'lax',
     path: '/',
   };
 };
@@ -18,6 +19,7 @@ const cookieOptions = () => {
 const sendAuthCookie = (res, user) => {
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: `${TOKEN_DAYS}d` });
   res.cookie('token', token, { ...cookieOptions(), maxAge: TOKEN_DAYS * 24 * 60 * 60 * 1000 });
+  return token;
 };
 
 const publicUser = (user) => ({
@@ -31,8 +33,8 @@ const publicUser = (user) => ({
 export const register = async (req, res) => {
   const { name, email, password, role } = req.body || {};
   const user = await User.create({ name, email, password, role });
-  sendAuthCookie(res, user);
-  res.status(201).json(publicUser(user));
+  const token = sendAuthCookie(res, user);
+  res.status(201).json({ ...publicUser(user), csrfToken: csrfTokenFor(token) });
 };
 
 // POST /api/auth/login
@@ -48,8 +50,8 @@ export const login = async (req, res) => {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  sendAuthCookie(res, user);
-  res.json(publicUser(user));
+  const token = sendAuthCookie(res, user);
+  res.json({ ...publicUser(user), csrfToken: csrfTokenFor(token) });
 };
 
 // POST /api/auth/logout
@@ -60,5 +62,5 @@ export const logout = (req, res) => {
 
 // GET /api/auth/me (requires the protect middleware)
 export const getMe = (req, res) => {
-  res.json(publicUser(req.user));
+  res.json({ ...publicUser(req.user), csrfToken: csrfTokenFor(req.cookies.token) });
 };
