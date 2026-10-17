@@ -1,6 +1,7 @@
 import { apiRequest } from './api.js'
 
-export const getCourses = () => apiRequest('/courses')
+export const getCourses = (search = '') =>
+  apiRequest(search ? `/courses?search=${encodeURIComponent(search)}` : '/courses')
 
 export const getCourse = (id) => apiRequest(`/courses/${id}`)
 
