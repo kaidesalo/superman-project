@@ -80,8 +80,8 @@ course-scheduler/
 ## Setup
 
 ```bash
-git clone <your-repo-url>
-cd course-scheduler
+git clone https://github.com/kaidesalo/superman-project
+cd superman-project
 ```
 
 ### Server
@@ -143,25 +143,6 @@ In production one Render web service runs the Express API and also serves the bu
 Notes:
 - **Free Render web services sleep** after 15 minutes without traffic. The first request after that takes about a minute.
 - **Upgrading from the two-service setup:** delete the old `vulpicourse-client` static site in the Render Dashboard. It no longer works, because the login cookie now only goes to its own address (`SameSite=Lax`).
-
-## API Routes
-
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/health` | API + database status |
-| GET | `/api/courses` | List all courses (sorted by course number) |
-| GET | `/api/courses?search=csci` | Courses whose name or number contains the text (case-insensitive) |
-| GET | `/api/courses/:id` | Get one course |
-| POST | `/api/courses` | Create a course (teachers only; you become its owner) |
-| PUT | `/api/courses/:id` | Update a course you own (send only the fields to change) |
-| DELETE | `/api/courses/:id` | Delete a course you own |
-| POST | `/api/auth/register` | Create an account (`name`, `email`, `password` ≥ 8 chars, `role`: `teacher` or `student`) and sign in |
-| POST | `/api/auth/login` | Sign in with `email` + `password` (401 `Invalid email or password` on failure) |
-| POST | `/api/auth/logout` | Clear the auth cookie |
-| GET | `/api/auth/me` | Current user, or 401 if not signed in |
-| GET | `/api/enrollments/me` | Your schedule: enrollments with the full `course` (students only) |
-| POST | `/api/enrollments` | Add a course to your schedule, body `{"courseId": "..."}` (students only) |
-| DELETE | `/api/enrollments/:courseId` | Remove a course from your schedule (students only) |
 
 Auth uses a JWT stored in an HTTP-only `token` cookie (7 days; `SameSite=Lax`, plus `Secure` when `NODE_ENV=production`). The token is never sent in a response body or stored in `localStorage`. Passwords are hashed with bcrypt and never returned by the API. The server refuses to start if `JWT_SECRET` is missing, shorter than 32 characters, or still the `.env.example` placeholder.
 
