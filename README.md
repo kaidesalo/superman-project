@@ -152,7 +152,7 @@ Anyone can view courses. Creating, editing and deleting require a signed-in teac
 
 Schedule actions (`/api/enrollments`) require a signed-in student. The student is always the signed-in user; the API never accepts a student id. Each course can be in a student's schedule only once (unique `student` + `course` index). Removing a course from a schedule deletes only the Enrollment; the course stays in the catalog. When a teacher deletes a course, it is also removed from every schedule.
 
-Courses created before Phase 7 have no owner, so nobody can edit them. Give them to a teacher with:
+Courses created before Milestone 2 have no owner, so nobody can edit them. Give them to a teacher with:
 
 ```bash
 cd server && npm run assign-owner -- teacher@example.com
