@@ -1,15 +1,21 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { getCourse } from '../services/courseService.js'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { deleteCourse, getCourse } from '../services/courseService.js'
 import SubjectBadge from '../components/SubjectBadge.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
+import SuccessMessage from '../components/SuccessMessage.jsx'
+import useFlashMessage from '../hooks/useFlashMessage.js'
 
 function CourseDetailsPage() {
   const { id } = useParams()
   const [course, setCourse] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [deleteError, setDeleteError] = useState('')
+  const [deleting, setDeleting] = useState(false)
+  const navigate = useNavigate()
+  const successMessage = useFlashMessage()
 
   useEffect(() => {
     getCourse(id)
@@ -18,13 +24,28 @@ function CourseDetailsPage() {
       .finally(() => setLoading(false))
   }, [id])
 
+  const handleDelete = async () => {
+    if (!window.confirm(`Delete ${course.courseNumber}: ${course.courseName}? This cannot be undone.`)) return
+    setDeleting(true)
+    setDeleteError('')
+    try {
+      await deleteCourse(id)
+      navigate('/courses', { state: { message: `${course.courseNumber} was deleted.` } })
+    } catch (err) {
+      setDeleteError(err.message)
+      setDeleting(false)
+    }
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
       <Link to="/courses" className="text-sm font-medium text-blue-600 hover:underline">
         &larr; Back to Courses
       </Link>
 
-      <div className="mt-4">
+      <div className="mt-4 space-y-4">
+        <SuccessMessage message={successMessage} />
+        <ErrorMessage message={deleteError} />
         {loading && <LoadingSpinner label="Loading course..." />}
         <ErrorMessage message={error} />
 
@@ -41,12 +62,22 @@ function CourseDetailsPage() {
                   </span>
                 </div>
               </div>
-              <Link
-                to={`/courses/${course._id}/edit`}
-                className="self-start rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-              >
-                Edit
-              </Link>
+              <div className="flex gap-2 self-start">
+                <Link
+                  to={`/courses/${course._id}/edit`}
+                  className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                >
+                  Edit
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="rounded-lg border border-red-300 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-60"
+                >
+                  {deleting ? 'Deleting...' : 'Delete'}
+                </button>
+              </div>
             </div>
 
             <h2 className="mt-8 font-semibold text-slate-900">Description</h2>

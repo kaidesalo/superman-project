@@ -3,11 +3,14 @@ import { getCourses } from '../services/courseService.js'
 import CourseCard from '../components/CourseCard.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
+import SuccessMessage from '../components/SuccessMessage.jsx'
+import useFlashMessage from '../hooks/useFlashMessage.js'
 
 function CourseListPage() {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const successMessage = useFlashMessage()
 
   useEffect(() => {
     getCourses()
@@ -21,13 +24,14 @@ function CourseListPage() {
       <h1 className="text-3xl font-bold text-slate-900">Course Catalog</h1>
       <p className="mt-1 text-slate-600">Browse available courses.</p>
 
-      <div className="mt-6">
+      <div className="mt-6 space-y-4">
+        <SuccessMessage message={successMessage} />
         {loading && <LoadingSpinner label="Loading courses..." />}
         <ErrorMessage message={error} />
 
         {!loading && !error && (
-          <>
-            <p className="mb-4 text-sm text-slate-500">
+          <div className="space-y-4">
+            <p className="text-sm text-slate-500">
               {courses.length} {courses.length === 1 ? 'course' : 'courses'} found
             </p>
             {courses.length === 0 ? (
@@ -41,7 +45,7 @@ function CourseListPage() {
                 ))}
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

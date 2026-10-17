@@ -5,6 +5,8 @@ import CourseListPage from './pages/CourseListPage.jsx'
 import CourseDetailsPage from './pages/CourseDetailsPage.jsx'
 import CourseFormPage from './pages/CourseFormPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
+import LoginPage from './pages/LoginPage.jsx'
+import RegisterPage from './pages/RegisterPage.jsx'
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/courses/new" element={<CourseFormPage key="new" />} />
           <Route path="/courses/:id" element={<CourseDetailsPage />} />
           <Route path="/courses/:id/edit" element={<CourseFormPage key="edit" />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
