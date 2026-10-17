@@ -2,7 +2,7 @@
 
 A MERN-stack MVP where **teachers manage courses** and **students build schedules**.
 
-> Status: **MVP complete** (Milestones 1 and 2, Phases 1–12).
+> Status: **MVP complete** (Milestones 1 and 2).
 
 ## Features
 
